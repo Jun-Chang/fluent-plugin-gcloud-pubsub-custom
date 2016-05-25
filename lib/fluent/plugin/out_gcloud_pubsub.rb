@@ -38,6 +38,7 @@ module Fluent
 
       pubsub = (Gcloud.new @project, @key).pubsub
       @client = pubsub.topic @topic, autocreate: @autocreate_topic
+      log.debug "connected topic name:#{@client.name}"
     end
 
     def format(tag, time, record)
@@ -46,7 +47,6 @@ module Fluent
 
     def write(chunk)
       messages = []
-      log.debug "Chunk record_counter:#{chunk.record_counter.to_s} size:#{chunk.size.to_s}"
 
       chunk.msgpack_each do |tag, time, record|
         messages << record.to_json.force_encoding("ASCII-8BIT")
@@ -64,6 +64,7 @@ module Fluent
     end
 
     def publish(messages)
+      log.debug "send message topic:#{@client.name} length:#{messages.length.to_s}"
       @client.publish do |batch|
         messages.each do |m|
           batch.publish m
