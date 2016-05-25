@@ -36,11 +36,14 @@ publish dummy json data like `{"message": "dummy", "value": 0}\n{"message": "dum
   key <YOUR KEY>
   flush_interval 10
   autocreate_topic false
+  max_records_per_request 1000
 </match>
 ```
 
 - `autocreate_topic` (optional, default: `false`)
   - If set to `true`, specified topic will be created when it doesn't exist.
+- `max_records_per_request` (optional, default: `1000`)
+  - Publishing messages per request to Pub/Sub. ref: https://cloud.google.com/pubsub/quotas#other_limits
 
 ## Pull messages
 Use `in_gcloud_pubsub`.
