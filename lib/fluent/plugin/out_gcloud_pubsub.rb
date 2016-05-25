@@ -49,7 +49,7 @@ module Fluent
       log.debug "Chunk record_counter:#{chunk.record_counter.to_s} size:#{chunk.size.to_s}"
 
       chunk.msgpack_each do |tag, time, record|
-        messages << record.to_json
+        messages << record.to_json.force_encoding("ASCII-8BIT")
       end
 
       if messages.length > 0
